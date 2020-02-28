@@ -10,10 +10,10 @@ int main()
 	cv::Mat deepMat;
 	cv::Mat shallowMat;
 	shallowMat = srcMat;//浅复制
-	deepMat.copyTo(srcMat);//深复制
+	srcMat.copyTo(deepMat);//深复制
 	int height = srcMat.rows;
 	int width = srcMat.cols;
-	uchar threshold = 100;//定于阈值
+	uchar threshold = 100;//定义阈值
 	for (int i = 0; i < height; i++)//遍历像素
 	{
 		for (int j = 0; j < width; j++)
@@ -31,8 +31,8 @@ int main()
 			srcMat.at<Vec3b>(i, j)[1] = average;//赋值
 			srcMat.at<Vec3b>(i, j)[2] = average;//赋值
 		}
-		cv::imshow("deepMat", deepMat);//显示深复制图片
-		cv::imshow("shallowMat", shallowMat);//显示浅复制图片
-		waitKey(0);
 	}
+	cv::imshow("deepMat", deepMat);//显示深复制图片
+	cv::imshow("shallowMat", shallowMat);//显示浅复制图片
+	waitKey(0);
 }
