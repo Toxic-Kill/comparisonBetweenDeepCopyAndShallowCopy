@@ -1,20 +1,38 @@
-﻿// comparisonBetweenDeepCopyAndShallowCopy.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+﻿#include <iostream>
+#include<opencv2/opencv.hpp>;
 
-#include <iostream>
+using namespace std;
+using namespace cv;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	cv::Mat srcMat = cv::imread("D:\\Files\\2.jpg");//读取图片
+	cv::Mat deepMat;
+	cv::Mat shallowMat;
+	shallowMat = srcMat;//浅复制
+	deepMat.copyTo(srcMat);//深复制
+	int height = srcMat.rows;
+	int width = srcMat.cols;
+	uchar threshold = 100;//定于阈值
+	for (int i = 0; i < height; i++)//遍历像素
+	{
+		for (int j = 0; j < width; j++)
+		{
+			uchar average = (srcMat.at<Vec3b>(i, j)[0] + srcMat.at<Vec3b>(i, j)[1] + srcMat.at<Vec3b>(i, j)[2]) / 3;//计算RGB均值
+			if (average > threshold)//二值化
+			{
+				average = 255;
+			}
+			else
+			{
+				average = 0;
+			}
+			srcMat.at<Vec3b>(i, j)[0] = average;//赋值
+			srcMat.at<Vec3b>(i, j)[1] = average;//赋值
+			srcMat.at<Vec3b>(i, j)[2] = average;//赋值
+		}
+		cv::imshow("deepMat", deepMat);//显示深复制图片
+		cv::imshow("shallowMat", shallowMat);//显示浅复制图片
+		waitKey(0);
+	}
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
